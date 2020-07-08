@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Nicholas D'Orazio: CST336: HW2: JavaScript/jQuery
+    </title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="css/styles.css" rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+    </head>
+    <body>
+        
+        <!-- Header Banner Image and Text -->
+        <header>
+            <div id="banner">
+                <img src="img/casino.jpg" id="banner-img" alt="image of casino slot machines">
+                <div id="banner-text">Nick's Casino</div>
+            </div>
+        </header>
+        
+        <!-- Navigation Links-->
+        <nav class="nav">
+          <a class="nav-link" href="#">Home</a>
+          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#">Link</a>
+        </nav>
+        <br />
+        <br />
+        <div id="game-screen">
+            <!-- Paytable Grid -->
+            <div id="paytable">
+                
+                <!-- Paytable Info Header -->
+                <div class="paytable-info-item">PLAY 1 TO 5 COINS</div>
+                <div class="paytable-info-item paytable-payout">1</div>
+                <div class="paytable-info-item paytable-payout">2</div>
+                <div class="paytable-info-item paytable-payout">3</div>
+                <div class="paytable-info-item paytable-payout">4</div>
+                <div class="paytable-info-item paytable-payout">5</div>
+        
+                <!-- Winning Payout Hands -->
+                <div class="paytable-column">
+                    <div class="paytable-item paytable-hand">ROYAL FLUSH</div>
+                    <div class="paytable-item paytable-hand">STRAIGHT FLUSH</div>
+                    <div class="paytable-item paytable-hand">4 OF A KIND</div>
+                    <div class="paytable-item paytable-hand">FULL HOUSE</div>
+                    <div class="paytable-item paytable-hand">FLUSH</div>
+                    <div class="paytable-item paytable-hand">STRAIGHT</div>
+                    <div class="paytable-item paytable-hand">3 OF A KIND</div>
+                    <div class="paytable-item paytable-hand">2 PAIR</div>
+                    <div class="paytable-item paytable-hand jacks-or-better">JACKS OR BETTER</div>
+                </div>
+                <!-- 1 Coin Payouts -->
+                <div class="paytable-column paytable-payout">
+                    <div class="paytable-item">250</div>
+                    <div class="paytable-item">50</div>
+                    <div class="paytable-item">25</div>
+                    <div class="paytable-item">9</div>
+                    <div class="paytable-item">6</div>
+                    <div class="paytable-item">4</div>
+                    <div class="paytable-item">3</div>
+                    <div class="paytable-item">2</div>
+                    <div class="paytable-item jacks-or-better">1</div>
+                </div>
+                <!-- 2 Coin Payouts -->
+                <div class="paytable-column paytable-payout">
+                    <div class="paytable-item">500</div>
+                    <div class="paytable-item">100</div>
+                    <div class="paytable-item">50</div>
+                    <div class="paytable-item">18</div>
+                    <div class="paytable-item">12</div>
+                    <div class="paytable-item">8</div>
+                    <div class="paytable-item">6</div>
+                    <div class="paytable-item">4</div>
+                    <div class="paytable-item jacks-or-better">2</div>
+                </div>
+                <!-- 3 Coin Payouts -->
+                <div class="paytable-column paytable-payout">
+                    <div class="paytable-item">750</div>
+                    <div class="paytable-item">150</div>
+                    <div class="paytable-item">75</div>
+                    <div class="paytable-item">27</div>
+                    <div class="paytable-item">18</div>
+                    <div class="paytable-item">12</div>
+                    <div class="paytable-item">9</div>
+                    <div class="paytable-item">6</div>
+                    <div class="paytable-item jacks-or-better">3</div>
+                </div>
+                <!-- 4 Coin Payouts -->
+                <div class="paytable-column paytable-payout">
+                    <div class="paytable-item">1000</div>
+                    <div class="paytable-item">200</div>
+                    <div class="paytable-item">100</div>
+                    <div class="paytable-item">36</div>
+                    <div class="paytable-item">24</div>
+                    <div class="paytable-item">16</div>
+                    <div class="paytable-item">12</div>
+                    <div class="paytable-item">8</div>
+                    <div class="paytable-item jacks-or-better">4</div>
+                </div>
+                <!-- 5 Coin Payouts -->
+                <div class="paytable-column paytable-payout">
+                    <div class="paytable-item">4000</div>
+                    <div class="paytable-item">250</div>
+                    <div class="paytable-item">125</div>
+                    <div class="paytable-item">45</div>
+                    <div class="paytable-item">30</div>
+                    <div class="paytable-item">20</div>
+                    <div class="paytable-item">15</div>
+                    <div class="paytable-item">10</div>
+                    <div class="paytable-item jacks-or-better">5</div>
+                </div>
+            </div> <!-- Ends Paytable Grid -->        
+                    
+            <!--  -->
+            <div class="card-container"></div>
+            
+            
+            <!-- Play Buttons -->
+            <br />
+            <br />
+            <div id="play-buttons">
+                <button type="button" class="btn btn-primary btn-lg"> BET ONE </button>
+                <button type="button" class="btn btn-primary btn-lg"> DRAW </button>
+                <button type="button" class="btn btn-primary btn-lg"> BET MAX </button>
+            </div>
+            
+        </div>
+    </body>
+</html>
+    

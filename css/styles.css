@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #0f52ba;
+}
+
+header {
+    position: relative;
+}
+
+#banner {
+    width: 100vw;
+}
+
+#banner-img {
+    width: 100vw;
+    height: 50vh;
+}
+
+#banner-text {
+    position: absolute;
+    text-align: center;
+    width: 100vw;
+    height: 50vh;
+    top: 50%;
+    left: 50%;
+    margin-left: -50vw;
+    margin-top: -10vh;
+    color: #0033FF;
+    font-size: 15vh;
+    text-shadow: 5px 2px 0px #FFFFFF;
+}
+
+nav {
+     display: flex;
+     text-align: center;
+     justify-content: space-evenly;
+}
+
+.nav-link {
+    color: red;
+}
+
+#game-screen {
+    width: 80%;
+    margin: auto;
+    background: black;
+}
+
+#paytable {
+    width: 100%;
+    display: inline-grid;
+    grid-template-columns: 16%, 16%, 16%, 16%, 16%, 16%; /* 100% divide by 6 columns */
+}
+
+.paytable-info-item {
+    grid-row-start: 1;
+    grid-row-end: 1;
+    font-size: 1.5rem;
+    color: yellow;
+}
+
+.paytable-column {
+    grid-row-start: 2;
+    grid-row-end: 2;
+    border: .5px solid #CCCC00; /* dark yellow1 */
+    background-color: blue;
+}
+
+.paytable-hand {
+    background-color: #192841; /* midnight blue */
+}
+
+.paytable-payout {
+    text-align: center;
+}
+
+.paytable-item {
+    color: white;
+}
+
+.jacks-or-better {
+    color: red;
+}
+
+#play-buttons {
+    text-align: center;
+}
