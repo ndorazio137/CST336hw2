@@ -15,11 +15,8 @@ $(document).ready(function() {
                 "AC.gif", "AD.gif", "AH.gif", "AS.gif"];
     
     $("#draw").on("click", draw); 
-
-  
-    
     
     function draw() {
-         $(".card").attr("src", "img/cards/" +cards[51]);
+         $(".card").attr("src", "img/cards/" +cards[0]);
     }
 }); //ready

@@ -1,139 +1,136 @@
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #0f52ba; /* sapphire blue */
+   margin: 0;
+   padding: 0;
+   background-color: #0f52ba;
+   /* sapphire blue */
 }
 
 header {
-    position: relative;
+   position: relative;
 }
 
 #banner {
-    width: 100vw;
+   width: 100vw;
 }
 
 #banner-img {
-    width: 100vw;
-    height: 50vh;
+   width: 100vw;
+   height: 50vh;
 }
 
 #banner-text {
-    position: absolute;
-    text-align: center;
-    width: 100vw;
-    height: 50vh;
-    top: 50%;
-    left: 50%;
-    margin-left: -50vw;
-    margin-top: -10vh;
-    color: blue;
-    font-size: 15vh;
-    text-shadow: 5px 2px 0px white;
+   position: absolute;
+   text-align: center;
+   width: 100vw;
+   height: 50vh;
+   top: 50%;
+   left: 50%;
+   margin-left: -50vw;
+   margin-top: -10vh;
+   color: blue;
+   font-size: 15vh;
+   text-shadow: 5px 2px 0px white;
 }
 
 nav {
-     display: flex;
-     text-align: center;
-     justify-content: space-evenly;
+   display: flex;
+   text-align: center;
+   justify-content: space-evenly;
 }
 
 .nav-link {
-    color: red;
+   color: red;
 }
 
 #game-screen {
-    width: 80%;
-    margin: auto;
-    background: black;
-    border: 4px solid red;
-    border-radius: 5px;
+   width: 80%;
+   margin: auto;
+   background: black;
+   border: 4px solid red;
+   border-radius: 5px;
 }
 
 #paytable {
-    width: 100%;
-    display: inline-grid;
-    grid-template-columns: 16%, 16%, 16%, 16%, 16%, 16%; /* 100% divide by 6 columns */
+   width: 100%;
+   display: inline-grid;
+   grid-template-columns: 16%, 16%, 16%, 16%, 16%, 16%;
+   /* 100% divide by 6 columns */
 }
 
 .paytable-info-item {
-    grid-row-start: 1;
-    grid-row-end: 1;
-    font-size: 1.5rem;
-    color: yellow;
+   grid-row: 1 / 1;
+   font-size: 1.5rem;
+   color: yellow;
 }
 
 .paytable-column {
-    grid-row-start: 2;
-    grid-row-end: 2;
-    border: .5px solid #CCCC00; /* dark yellow1 */
-    border-radius: 2px;
-    background-color: blue;
+   grid-row: 2 / 2;
+   border: .5px solid #CCCC00;
+   /* dark yellow1 */
+   border-radius: 2px;
+   background-color: blue;
 }
 
 .paytable-hand {
-    background-color: #192841; /* midnight blue */
+   background-color: #192841;
+   /* midnight blue */
 }
 
 .paytable-payout {
-    text-align: center;
+   text-align: center;
 }
 
 .paytable-item {
-    color: white;
+   color: white;
 }
 
 .jacks-or-better {
-    color: red;
+   color: red;
 }
 
 #card-holds {
-    margin: auto;
-    display: grid;
+   margin: auto;
+   display: inline-grid;
 }
 
 .card-held {
-    grid-row-start: 1;
-    grid-row-end: 1;
-    color: white;
-    text-align: center;
+   grid-row: 1 / 1;
+   color: white;
+   text-align: center;
 }
 
 .card-container {
-    display: grid;
-    justify-content: center;
+   display: flex;
+   justify-content: center;
 }
 
 .cards {
-    grid-row-start: 1;
-    grid-row-end: 1;
-    justify-content: center;
+   grid-row: 1 / 1;
+   justify-content: center;
 }
 
 .card {
-     justify-content: center;
+   justify-content: center;
 }
 
 #play-buttons {
-    width: 100%;
-    display: inline-grid;
-    justify-content: center;
+   width: 100%;
+   display: grid;
+   justify-content: center;
 }
 
 .play-grid-item {
-    justify-content: center;
-    margin: 10%;
-    grid-row-start: 1;
-    grid-row-end: 1;
+   justify-content: center;
+   margin: 10%;
+   grid-row: 1 / 1;
 }
 
 .play-grid-item1 {
-    display: inline-grid;
-    grid-row-start: 1;
-    grid-row-end: 1;
-    justify-content: center;
+   display: grid;
+   text-align: center;
 }
 
 #bet-text {
-    text-align: center;
-    color: white;
+   text-align: center;
+   color: white;
 }
