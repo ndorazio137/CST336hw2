@@ -1,5 +1,8 @@
 $(document).ready(function() {
     
+    var numCards = 52;
+    var handSize = 5;
+    var holds = [false, false, false, false, false];
     var cards = ["2C.gif", "2D.gif", "2H.gif", "2S.gif",
                 "3C.gif", "3D.gif", "3H.gif", "3S.gif",
                 "4C.gif", "4D.gif", "4H.gif", "4S.gif",
@@ -17,6 +20,15 @@ $(document).ready(function() {
     $("#draw").on("click", draw); 
     
     function draw() {
-         $(".card").attr("src", "img/cards/2D.gif");
+        for(let i = 1; i <= handSize; i++) {
+            if(holds[i-1] != true) {
+                let index = Math.floor(Math.random() * numCards);
+                $(`#card${i}`).attr("src", "img/" + cards[index]);
+            }
+        }
+    }
+    
+    function setHold(index, bool) {
+        holds[index] = bool;
     }
 }); //ready
