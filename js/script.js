@@ -17,6 +17,6 @@ $(document).ready(function() {
     $("#draw").on("click", draw); 
     
     function draw() {
-         $(".card").attr("src", "img/cards/" +cards[0]);
+         $(".card").attr("src", "img/cards/2D.gif");
     }
 }); //ready
