@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
     <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
@@ -115,16 +115,45 @@
             </div> <!-- Ends Paytable Grid -->        
                     
             <!--  -->
-            <div class="card-container"></div>
-            
+            <br />
+            <br />
+            <div id="card-holds">
+                <div class="card-held">Held</div>
+                <div class="card-held">Held</div>
+                <div class="card-held">Held</div>
+                <div class="card-held">Held</div>
+                <div class="card-held">Held</div>
+            </div>
+            <div class="card-container">
+                <div class="cards">
+                    <img src="img/cards/BK.gif" class="card">
+                </div>
+                <div class="cards">
+                    <img src="img/cards/BK.gif" class="card">
+                </div>
+                <div class="cards">
+                    <img src="img/cards/BK.gif" class="card">
+                </div>
+                <div class="cards">
+                    <img src="img/cards/BK.gif" class="card">
+                </div>
+                <div class="cards">
+                    <img src="img/cards/BK.gif" class="card">
+                </div>
+            </div>
             
             <!-- Play Buttons -->
             <br />
             <br />
             <div id="play-buttons">
-                <button type="button" class="btn btn-primary btn-lg"> BET ONE </button>
-                <button type="button" class="btn btn-primary btn-lg"> DRAW </button>
-                <button type="button" class="btn btn-primary btn-lg"> BET MAX </button>
+                <div class="play-grid-item">
+                    <button type="button" id="increase-bet" class="play-grid-item1 btn btn-primary btn-lg"> + </button>
+                    <span id="bet-text" class="play-grid-item1">BET</span>
+                    <button type="button" id="decrease-bet" class="play-grid-item1 btn btn-primary btn-lg"> - </button>
+                </div>
+                <button type="button" id="bet-one" class="play-grid-item btn btn-primary btn-lg"> BET ONE </button>
+                <button type="button" id="bet-max" class="play-grid-item btn btn-primary btn-lg"> BET MAX </button>
+                <button type="button" id="draw" class="play-grid-item btn btn-primary btn-lg"> DRAW </button>
             </div>
             
         </div>
