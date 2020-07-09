@@ -1,12 +1,6 @@
 $(document).ready(function() {
 
-     // card suit enum
-    var suit = Object.freeze({
-        CLUBS: "clubs",
-        DIAMONDS: "diamonds",
-        HEARTS: "hearts",
-        SPADES: "spades"
-    });
+    $("#draw").on("click", draw);
     
     //possible states of gameplay
     var gameState = Object.freeze({
@@ -19,59 +13,85 @@ $(document).ready(function() {
     });
     
     //card values
-    var values = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
+    var ranks = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
+    //card suits
+    var suit = ["C", "D", "H", "S"];
     
     var __currentGameState = gameState.UNINITIALIZED; //starting gamestate
     var __value; //card's face value
     var __suit; //cards suit
     var __held; //is card legal
     var __startingCoins = 100; //number of coins at start
-    var __coins = __startingCoins; //number of coins in purse
-    var __bet = 1; //number of coins currently betting
-   
-    //card images
-    var cards = ["2C.gif", "2D.gif", "2H.gif", "2S.gif",
-                "3C.gif", "3D.gif", "3H.gif", "3S.gif",
-                "4C.gif", "4D.gif", "4H.gif", "4S.gif",
-                "5C.gif", "5D.gif", "5H.gif", "5S.gif",
-                "6C.gif", "6D.gif", "6H.gif", "6S.gif",
-                "7C.gif", "7D.gif", "7H.gif", "7S.gif",
-                "8C.gif", "8D.gif", "8H.gif", "8S.gif",
-                "9C.gif", "9D.gif", "9H.gif", "9S.gif",
-                "TC.gif", "TD.gif", "TH.gif", "TS.gif",
-                "JC.gif", "JD.gif", "JH.gif", "JS.gif",
-                "QC.gif", "QD.gif", "QH.gif", "QS.gif",
-                "KC.gif", "KD.gif", "KH.gif", "KS.gif",
-                "AC.gif", "AD.gif", "AH.gif", "AS.gif"];
+    var coins = __startingCoins; //number of coins in purse
+    var bet = 1; //number of coins currently betting
+    var __hand; // players showing hand.
+    var __handSize = 5; 
+    var __deckSize = 52; //52 cards in a deck. No Jokers.
+    var __deck; //playing deck to deal from.
     
-    $("#draw").on("click", draw);
-    $("#card1").on( "click", function() {
-        if (__holds[0] == false) {
-            setHold(index, true);
-        }
-        else {
-            setHold(index, false);
-        }
-    });
-    
-    function draw() {
-        for(let i = 1; i <= handSize; i++) {
-            if(__holds[i-1] != true) {
-                let index = Math.floor(Math.random() * numCards);
-                $(`#card${i}`).attr("src", "img/" + cards[index]);
+    (function initialize() {
+        if (__currentGameState == gameState.UNINITIALIZED)
+        {
+            // create hand and deck.
+            __hand = new Array(__handSize);
+            Deck();
+            
+            
+            // fill hand
+            let i;
+            for (i = 1; i <= __handSize; i++) {
+                __hand[i - 1] = __deck.pop();
+                $(`#card${i}`).attr("src", "img/" + __hand[i - 1].__value +
+                 __hand[i - 1].__suit + ".gif");
             }
         }
-    }
+    })();
     
-    function card(suit, value) {
+    // Constructor. Creates a card. 
+    function Card(suit, value) {
         this.__suit = suit;
         this.__value = value;
         this.__held = false;
     }
     
-    set hold(card) {
-
+    // Creates and Loads Deck with cards.
+    function Deck() {
+        __deck = new Array(__deckSize);
+        let i, j, card;
+        for (i = 0; i < ranks.length; i++) {
+            for (j = 0; j < suit.length; j++) {
+                card = new Card(suit[j], ranks[i]);
+                __deck.push(card);
+            }
+        }
+        shuffle(__deck);
     }
+    
+    function shuffle(array) {
+        let i, temp, random;
+        for(i = 0; i < __deckSize; i++) {
+            temp = array[i];
+            random = Math.floor(Math.random() * __deckSize);
+            array[i] = array[random];
+            array[random] = temp;
+        }
+    }
+    
+    // Insertion sort for hand. Needed to simplify winning hand checks.
+    function sort(array) {
+        let i, key, j;
+        for (i = 1; i < array.length; i++) {
+            key = array[i];
+            j = i - 1;
+            while (j >= 0 && array[j] > key) {
+                array[j + 1] = array[j];
+                j = j -1;
+            }
+            array[j + 1] = key;
+        }
+    }
+    
+    
 }); //ready
 
 
