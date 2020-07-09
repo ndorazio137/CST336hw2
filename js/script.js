@@ -1,11 +1,35 @@
 $(document).ready(function() {
+
+     // card suit enum
+    var suit = Object.freeze({
+        CLUBS: "clubs",
+        DIAMONDS: "diamonds",
+        HEARTS: "hearts",
+        SPADES: "spades"
+    });
     
-    var numCards = 52; //number of cards in deck
-    var handSize = 5; //number of cards in a hand
-    var hand;
-    var coins = 100; //number of coins in purse
+    //possible states of gameplay
+    var gameState = Object.freeze({
+        UNINITIALIZED: 0,
+        DEAL: 1,
+        DRAW: 2,
+        WIN: 3,
+        LOSE: 4,
+        GAMEOVER: 5
+    });
     
-    var holds = [false, false, false, false, false]; // is card index held
+    //card values
+    var values = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
+    
+    var __currentGameState = gameState.UNINITIALIZED; //starting gamestate
+    var __value; //card's face value
+    var __suit; //cards suit
+    var __held; //is card legal
+    var __startingCoins = 100; //number of coins at start
+    var __coins = __startingCoins; //number of coins in purse
+    var __bet = 1; //number of coins currently betting
+   
+    //card images
     var cards = ["2C.gif", "2D.gif", "2H.gif", "2S.gif",
                 "3C.gif", "3D.gif", "3H.gif", "3S.gif",
                 "4C.gif", "4D.gif", "4H.gif", "4S.gif",
@@ -22,7 +46,7 @@ $(document).ready(function() {
     
     $("#draw").on("click", draw);
     $("#card1").on( "click", function() {
-        if (holds[0] == false) {
+        if (__holds[0] == false) {
             setHold(index, true);
         }
         else {
@@ -32,99 +56,26 @@ $(document).ready(function() {
     
     function draw() {
         for(let i = 1; i <= handSize; i++) {
-            if(holds[i-1] != true) {
+            if(__holds[i-1] != true) {
                 let index = Math.floor(Math.random() * numCards);
                 $(`#card${i}`).attr("src", "img/" + cards[index]);
             }
         }
     }
     
-    function setHold(index, bool) {
-        holds[index] = bool;
+    function card(suit, value) {
+        this.__suit = suit;
+        this.__value = value;
+        this.__held = false;
     }
     
-    function jackOrBetter() {
-        
+    set hold(card) {
+
     }
 }); //ready
 
-class Card {
-    
-    // suit enum
-    suit = Object.freeze({
-        CLUBS: "clubs",
-        DIAMONDS: "diamonds",
-        HEARTS: "hearts",
-        SPADES: "spades"
-    });
-    
-    __value; //card's face value
-    __suit; //cards suit
-    __errorFlag; //is card legal
-    
-    constructor(suit, value) {
-        set(suit, value);
-    }
-    
-    set setSuit(suit) {
-        if (isValid(value, suit)) {
-            this.__suit = suit;
-            __errorFlag = false;
-            return __errorFlag;
-        }
-        this.__suit = suit;
-        __errorFlag = true;
-        return __errorFlag;
-    }
-    
-    set setValue(value) {
-        if (isValid(value, suit)) {
-            this.__value = value;
-            __errorFlag = false;
-            return __errorFlag;
-        }
-        this.__value = value;
-        __errorFlag = true;
-        return __errorFlag;
-    }
-    
-    isValid(suit, value) {
-        if (__value == 'A' || __value == '2' || __value == '3' || __value == '4' || 
-            __value == '5' || __value == '6' || __value == '7' || __value == '8' ||
-            __value == '9' || __value == 'T' || __value == 'J' || __value == 'Q' ||
-            __value == 'K') 
-        {
-            return true;
-        } 
-        return false;
-    }
-    
-    equals(card) {
-        if (card != null && card != undefined && card.__suit == this.__suit
-            && card.__value == this.__value) {
-            return true;
-        }
-        return false;
-    }
-    
-    get getValue() {
-        return __value;
-    }
-    
-    get getSuit() {
-        return __suit;
-    }
-    
-    get getErrorFlag() {
-        return __errorFlag;
-    }
-}
 
-class Hand {
-    static NUM_CARDS = 5; //cards per hand
     
-    constructor() {
-        
-    }
+   
     
-}
+    
