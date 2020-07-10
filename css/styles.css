@@ -32,16 +32,6 @@ header {
    text-shadow: 5px 2px 0px white;
 }
 
-nav {
-   display: flex;
-   text-align: center;
-   justify-content: space-evenly;
-}
-
-.nav-link {
-   color: red;
-}
-
 #game-screen {
    width: 80%;
    margin: auto;
@@ -88,15 +78,17 @@ nav {
    color: red;
 }
 
-#card-holds {
-   margin: auto;
-   display: inline-grid;
+#purse-info, #bet-info {
+   color: yellow;
+   text-align: right;
+   margin: 3%;
 }
 
 .card-held {
-   grid-row: 1 / 1;
    color: white;
+   display: inline-block;
    text-align: center;
+   padding: 2vw;
 }
 
 .card-container {

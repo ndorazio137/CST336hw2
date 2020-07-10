@@ -1,10 +1,17 @@
 $(document).ready(function() {
 
+    //event listeners.
     $("#draw").on("click", draw);
     $("#bet-one").on("click", betOne);
     $("#bet-max").on("click", betMax);
     $("#increase-bet").on("click", increaseBet);
     $("#decrease-bet").on("click", decreaseBet);
+    $("#card0").on("click", holdCard);
+    $("#card1").on("click", holdCard);
+    $("#card2").on("click", holdCard);
+    $("#card3").on("click", holdCard);
+    $("#card4").on("click", holdCard);
+    
     //possible states of gameplay
     var gameState = Object.freeze({
         DEAL: 0,
@@ -14,16 +21,16 @@ $(document).ready(function() {
         GAMEOVER: 4
     });
     
-    //card values
+    //card values.
     var ranks = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
-    //card suits
+    //card suits.
     var suits = ['C', 'D', 'H', 'S'];
 
     var hand;
     var __handSize = 5; 
     var deck; 
     var purse = 100; 
-    var bet = 1;
+    var bet = 0;
     var __currentGameState = gameState.DEAL;
 
     (function game() {
@@ -78,25 +85,38 @@ $(document).ready(function() {
         }
     }
     
+    function holdCard(card) {
+        card.held = !card.held;
+    }
+    
     //TODO: update for held cards
     function draw() {
         dealCards();
     }
     
-    function betOne() {
-        bet = 1;
-        --purse;
-        displayBet();
+    function bet() {
     }
     
+    //TODO: revert if bet max was pressed first
+    function betOne() {
+        if (purse > 0) {
+            bet = 1;
+            --purse;
+            displayBet();
+        }
+    }
+    
+    //TODO: revert if bet one was pressed first
     function betMax() {
-        bet = 5;
-        purse = purse - 5;
-        displayBet();
+        if (purse >= 5) {
+            bet = 5;
+            purse = purse - 5;
+            displayBet();
+        }
     }
     
     function increaseBet() {
-        if (bet < 5) {
+        if (purse >= 0  && bet < 5) {
             ++bet;
             --purse;
             displayBet();
@@ -104,7 +124,7 @@ $(document).ready(function() {
     }
     
     function decreaseBet() {
-        if (bet > 1) {
+        if (bet > 0) {
             --bet;
             ++purse;
             displayBet();
@@ -112,6 +132,8 @@ $(document).ready(function() {
     }
     
     function displayBet() {
+        document.getElementById("purse-info").innerHTML = "PURSE: " + purse.toString() + " COINS";
+        document.getElementById("bet-info").innerHTML = "BET: " + bet.toString() + " COINS";
         document.getElementById("bet-text").innerHTML = bet.toString();
     }
             
@@ -122,7 +144,7 @@ function Card(suit, value) {
     let card = {
         value: value,
         suit: suit,
-        held: false
+        held: true
     };
 
     return card;
@@ -151,7 +173,7 @@ function shuffle(array) {
     let i, temp, random;
     for (i = 0; i < array.length; i++) {
         temp = array[i];
-        random = Math.floor(Math.random() * array.length);
+        random = Math.floor(Math.random() * i);
         array[i] = array[random];
         array[random] = temp;
     }
