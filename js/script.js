@@ -1,14 +1,17 @@
 $(document).ready(function() {
 
     $("#draw").on("click", draw);
+    $("#bet-one").on("click", betOne);
+    $("#bet-max").on("click", betMax);
+    $("#increase-bet").on("click", increaseBet);
+    $("#decrease-bet").on("click", decreaseBet);
     //possible states of gameplay
     var gameState = Object.freeze({
-        UNINITIALIZED: 0,
-        DEAL: 1,
-        DRAW: 2,
-        WIN: 3,
-        LOSE: 4,
-        GAMEOVER: 5
+        DEAL: 0,
+        DRAW: 1,
+        WIN: 2,
+        LOSE: 3,
+        GAMEOVER: 4
     });
     
     //card values
@@ -17,52 +20,101 @@ $(document).ready(function() {
     var suits = ['C', 'D', 'H', 'S'];
 
     var hand;
-    var __handSize = 5;
-    var __deckSize = 52; //52 cards in a deck. No Jokers.
-    var deck;
-    var __currentGameState = gameState.UNINITIALIZED;
+    var __handSize = 5; 
+    var deck; 
+    var purse = 100; 
+    var bet = 1;
+    var __currentGameState = gameState.DEAL;
 
-    (function createDeck() {
-        deck = Deck(0);
-        hand = Hand(__handSize);
-        let i = 0;
-        (function initializeDeck() {
-            ranks.forEach((rank) => {
-                suits.forEach((suit) => {
-                    let card = new Card(suit, rank);
-                    deck.cards.push(card);
-                    //deck.cards[i] = card;
-                    console.log(deck.cards[i].value);
-                    i++;
-                });
-            });
-        })();
-        //console.log(deck.cards[1]);
-        shuffle(deck.cards);
-        dealCards();
-        __currentGameState = gameState.DEAL;
+    (function game() {
+        if (__currentGameState == gameState.DEAL){
+            initialize();
+        }
+        
+        if (__currentGameState == gameState.DRAW) {
+            draw();
+        }
+        
+        if (__currentGameState == gameState.WIN) {
+            
+        }
+        
+        if (__currentGameState == gameState.LOSE) {
+            
+        }
+        
+        if(__currentGameState == gameState.GAMEOVER) {
+            
+        }
     })();
     
+    function initialize() {
+        deck = allocateDeck();
+        hand = allocateHand(__handSize);
+        addCardsToDeck();
+        shuffle(deck.cards);
+        dealCards();
+        __currentGameState = gameState.DRAW;
+    }
+    
+    function addCardsToDeck() {
+        ranks.forEach((rank) => {
+            suits.forEach((suit) => {
+                let card = new Card(suit, rank);
+                deck.cards.push(card);
+            });
+        });
+    }
+    
+    // Deals the cards and updates the hand
     function dealCards() {
         // fill hand
         let i;
         for (i = 0; i < hand.cards.length; i++) {
-            //console.log(i);
             hand.cards[i] = deck.cards.pop();
+            // Display hand to screen
             $(`#card${i}`).attr("src", "img/" + hand.cards[i].value +
                 hand.cards[i].suit + ".gif");
         }
     }
     
+    //TODO: update for held cards
     function draw() {
-        
         dealCards();
     }
-            
-        
-   
-
     
+    function betOne() {
+        bet = 1;
+        --purse;
+        displayBet();
+    }
+    
+    function betMax() {
+        bet = 5;
+        purse = purse - 5;
+        displayBet();
+    }
+    
+    function increaseBet() {
+        if (bet < 5) {
+            ++bet;
+            --purse;
+            displayBet();
+        }
+    }
+    
+    function decreaseBet() {
+        if (bet > 1) {
+            --bet;
+            ++purse;
+            displayBet();
+        }
+    }
+    
+    function displayBet() {
+        document.getElementById("bet-text").innerHTML = bet.toString();
+    }
+            
 }); //ready
 
 // Creates a card. 
@@ -76,7 +128,8 @@ function Card(suit, value) {
     return card;
 }
 
-function Hand(size) {
+// Creates a hand
+function allocateHand(size) {
     let hand = {
        cards: new Array(size)
     };
@@ -84,14 +137,16 @@ function Hand(size) {
     return hand;
 }
 
-function Deck(size) {
+// Creates the deck
+function allocateDeck() {
     let deck = {
-        cards: new Array(size)
+        cards: []
     };
 
     return deck;
 }
 
+// Shuffles any array.
 function shuffle(array) {
     let i, temp, random;
     for (i = 0; i < array.length; i++) {
@@ -100,6 +155,5 @@ function shuffle(array) {
         array[i] = array[random];
         array[random] = temp;
     }
-    
-    //return array;
 }
+
