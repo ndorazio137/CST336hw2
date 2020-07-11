@@ -2,16 +2,13 @@ $(document).ready(function() {
 
     //event listeners.
     $("#draw").on("click", draw);
-    $("#bet-one").on("click", betOne);
-    $("#bet-max").on("click", betMax);
-    $("#increase-bet").on("click", increaseBet);
-    $("#decrease-bet").on("click", decreaseBet);
+    
     $("#card0").on("click", holdCard);
     $("#card1").on("click", holdCard);
     $("#card2").on("click", holdCard);
     $("#card3").on("click", holdCard);
     $("#card4").on("click", holdCard);
-    
+
     //possible states of gameplay
     var gameState = Object.freeze({
         DEAL: 0,
@@ -20,41 +17,47 @@ $(document).ready(function() {
         LOSE: 3,
         GAMEOVER: 4
     });
-    
+
     //card values.
     var ranks = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
     //card suits.
     var suits = ['C', 'D', 'H', 'S'];
 
     var hand;
-    var __handSize = 5; 
-    var deck; 
-    var purse = 100; 
+    var __handSize = 5;
+    var deck;
+    var purse = 100;
     var bet = 0;
+    var previouslyBetted = false;
+    var previousBet = 0;
     var __currentGameState = gameState.DEAL;
 
     (function game() {
-        if (__currentGameState == gameState.DEAL){
+        if (__currentGameState == gameState.DEAL) {
             initialize();
+            $("#bet-one").on("click", betOne);
+            $("#bet-max").on("click", betMax);
+            $("#increase-bet").on("click", increaseBet);
+            $("#decrease-bet").on("click", decreaseBet);
         }
-        
+
         if (__currentGameState == gameState.DRAW) {
             draw();
         }
-        
+
         if (__currentGameState == gameState.WIN) {
-            
+
         }
-        
+
         if (__currentGameState == gameState.LOSE) {
-            
+
         }
-        
-        if(__currentGameState == gameState.GAMEOVER) {
-            
+
+        if (__currentGameState == gameState.GAMEOVER) {
+
         }
     })();
-    
+
     function initialize() {
         deck = allocateDeck();
         hand = allocateHand(__handSize);
@@ -63,7 +66,7 @@ $(document).ready(function() {
         dealCards();
         __currentGameState = gameState.DRAW;
     }
-    
+
     function addCardsToDeck() {
         ranks.forEach((rank) => {
             suits.forEach((suit) => {
@@ -72,7 +75,7 @@ $(document).ready(function() {
             });
         });
     }
-    
+
     // Deals the cards and updates the hand
     function dealCards() {
         // fill hand
@@ -84,59 +87,77 @@ $(document).ready(function() {
                 hand.cards[i].suit + ".gif");
         }
     }
-    
+
+    //Display held card text
     function holdCard(card) {
         card.held = !card.held;
     }
-    
+
     //TODO: update for held cards
     function draw() {
         dealCards();
     }
-    
-    function bet() {
-    }
-    
+
     //TODO: revert if bet max was pressed first
     function betOne() {
-        if (purse > 0) {
+        if (previouslyBetted == true) {
+            purse = purse + previousBet;
+        }
+        
+        if(purse > 0) {
             bet = 1;
             --purse;
-            displayBet();
+            previousBet = bet;
+            previouslyBetted = true;
         }
+            
+        displayBet();
     }
-    
+
     //TODO: revert if bet one was pressed first
     function betMax() {
+        if (previouslyBetted == true) {
+            purse = purse + previousBet;
+        }
+            
         if (purse >= 5) {
             bet = 5;
             purse = purse - 5;
-            displayBet();
+            previousBet = bet;
+            previouslyBetted = true;
         }
+        
+        displayBet();
     }
-    
+
     function increaseBet() {
-        if (purse >= 0  && bet < 5) {
+        if ((purse >= 0) && (bet < 5)) {
             ++bet;
+            ++previousBet;
             --purse;
-            displayBet();
+            previouslyBetted = true;
         }
+        
+        displayBet();
     }
-    
+
     function decreaseBet() {
-        if (bet > 0) {
+        if (bet > 1) {
             --bet;
-            ++purse;
-            displayBet();
+            --previousBet;
+            ++purse
+            previouslyBetted = true;
         }
+        
+        displayBet();
     }
-    
+
     function displayBet() {
         document.getElementById("purse-info").innerHTML = "PURSE: " + purse.toString() + " COINS";
         document.getElementById("bet-info").innerHTML = "BET: " + bet.toString() + " COINS";
         document.getElementById("bet-text").innerHTML = bet.toString();
     }
-            
+
 }); //ready
 
 // Creates a card. 
@@ -153,9 +174,9 @@ function Card(suit, value) {
 // Creates a hand
 function allocateHand(size) {
     let hand = {
-       cards: new Array(size)
+        cards: new Array(size)
     };
-    
+
     return hand;
 }
 
@@ -178,4 +199,3 @@ function shuffle(array) {
         array[random] = temp;
     }
 }
-
