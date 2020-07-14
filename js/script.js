@@ -1,6 +1,8 @@
 $(document).ready(function() {
-
-    //possible states of gameplay
+    
+    prompt("Enter Your Name");
+    
+    // Possible states of gameplay
     var gameState = Object.freeze({
         INTIALIZE: 0,
         DEAL: 1,
@@ -10,25 +12,28 @@ $(document).ready(function() {
         GAMEOVER: 5
     });
 
-    //card values.
-    //var ranks = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
-    var ranks = [{key: 1, value: 'A'},
-                       {key: 2, value: '2'},
-                       {key: 3, value: '3'},
-                       {key: 4, value: '4'},
-                       {key: 5, value: '5'},
-                       {key: 6, value: '6'},
-                       {key: 7, value: '7'},
-                       {key: 8, value: '8'},
-                       {key: 9, value: '9'},
-                       {key: 10, value: 'T'},
-                       {key: 11, value: 'J'},
-                       {key: 12, value: 'Q'},
-                       {key: 13, value: 'K'},
-                       {key: 14, value: 'A'}];
-    
-    //card suits.
-    var suits = ['C', 'D', 'H', 'S'];
+    // Card values.
+    var values = [{ name: '2', value: 2 },
+        { name: '3', value: 3 },
+        { name: '4', value: 4 },
+        { name: '5', value: 5 },
+        { name: '6', value: 6 },
+        { name: '7', value: 7 },
+        { name: '8', value: 8 },
+        { name: '9', value: 9 },
+        { name: 'T', value: 10 },
+        { name: 'J', value: 11 },
+        { name: 'Q', value: 12 },
+        { name: 'K', value: 13 },
+        { name: 'A', value: 14 }
+    ];
+
+    // Card suits.
+    var suits = [{ name: 'C', value: 0 },
+        { name: 'D', value: 1 },
+        { name: 'H', value: 2 },
+        { name: 'S', value: 3 }
+    ];
 
     var hand;
     var __handSize = 5;
@@ -37,7 +42,7 @@ $(document).ready(function() {
     var bet = 0;
     var previouslyBetted = false;
     var previousBet = 0;
-    var __currentGameState = gameState.INTIALIZE;
+    var __currentGameState;
 
     (function initialize() {
         __currentGameState = gameState.DEAL;
@@ -47,7 +52,7 @@ $(document).ready(function() {
         shuffle(deck.cards);
         dealCards();
         displayCards();
-        
+
         // Enable all buttons.
         $("#bet-one").on("click", betOne);
         $("#bet-max").on("click", betMax);
@@ -58,14 +63,14 @@ $(document).ready(function() {
         $("#card2").on("click", holdCard);
         $("#card3").on("click", holdCard);
         $("#card4").on("click", holdCard);
-        
-        $("#draw").click(function(){
+
+        $("#draw").click(function() {
             __currentGameState = gameState.DRAW;
-             draw();
+            draw();
         });
     })();
-    
-    //TODO: update for held cards
+
+
     function draw() {
         if (gameState = gameState.DRAW) {
             // Disable all buttons except for "Draw".
@@ -74,41 +79,41 @@ $(document).ready(function() {
             $("#bet-max").prop("disabled", true);
             $("#increase-bet").prop("disabled", true);
             $("#decrease-bet").prop("disabled", true);
-            $("#card0").prop("disabled", true);
-            $("#card1").prop("disabled", true);
-            $("#card2").prop("disabled", true);
-            $("#card3").prop("disabled", true);
-            $("#card4").prop("disabled", true);
             dealCards();
-            sort(hand);
+            checkForWin(hand.cards);
+            updateHeldCards();
             displayCards();
         }
     }
 
+    // Adds one full deck.
     function addCardsToDeck() {
-        let i;
-        //starts at 1 to avoid duplicate Aces.
-        for (i = 1; i < ranks.length; i++) {
-            suits.forEach((suit) => {
-                let card = new Card(suit, ranks[i].value, ranks[i].key);
+        values.forEach((val) => {
+            suits.forEach((st) => {
+                let card = new Card(st.name, st.value, val.name, val.value);
                 deck.cards.push(card);
             });
-        }
+        });
     }
 
-    // Deals cards to the hand
+    // Deals cards to the hand.
     function dealCards() {
         let i;
         for (i = 0; i < hand.cards.length; i++) {
-            hand.cards[i] = deck.cards.pop(); 
+            if ((hand.cards[i] == undefined) || (hand.cards[i].held == false)) {
+                hand.cards[i] = deck.cards.pop();
+            }
         }
+        
+        sortByValue(hand.cards);
     }
-    
+
     // Updates cards on screen.
     function displayCards() {
+        let i;
         for (i = 0; i < hand.cards.length; i++) {
-            $(`#card${i}`).attr("src", "img/" + hand.cards[i].value +
-                    hand.cards[i].suit + ".gif");
+            $(`#card${i}`).attr("src", "img/" + hand.cards[i].rankName +
+                hand.cards[i].suitName + ".gif");
         }
     }
 
@@ -166,7 +171,7 @@ $(document).ready(function() {
         if (bet > 1) {
             --bet;
             --previousBet;
-            ++purse
+            ++purse;
             previouslyBetted = true;
         }
 
@@ -179,78 +184,255 @@ $(document).ready(function() {
         document.getElementById("bet-info").innerHTML = "BET: " + bet.toString() + " COINS";
         document.getElementById("bet-text").innerHTML = bet.toString();
     }
-    
-    
-    //TODO: finish.
+
+
+    // Used to hold cards to prevent redeal. Toggles card's hold status on click.
     function holdCard() {
+        let i;
+        for (i = 0; i < __handSize; i++) {
+            if (this.id.toString() == ("card" + i.toString())) {
+                hand.cards[i].held = !hand.cards[i].held;
+                if (hand.cards[i].held) {
+                    // document.getElementById("card-held-" + i.toString()).style.color = "white";
+                    document.getElementById("card-held-" + i.toString()).style.display = "inline-block";
+                } 
+                else {
+                    // document.getElementById("card-held-" + i.toString()).style.color = "black";
+                    document.getElementById("card-held-" + i.toString()).style.display = "none";
+                }
+            }
+        }
+    }
+    
+    // Switch which cards are visibly held so that it matches the actual "held" values.
+    function updateHeldCards() {
+        let i;
+        for (i = 0; i < __handSize; i++) {
+            if (hand.cards[i].held) {
+                    // document.getElementById("card-held-" + i.toString()).style.color = "white";
+                    document.getElementById("card-held-" + i.toString()).style.display = "inline-block";
+                } 
+                else {
+                    // document.getElementById("card-held-" + i.toString()).style.color = "black";
+                    document.getElementById("card-held-" + i.toString()).style.display = "none";
+                }
+        }
+    }
+
+    // Check for winning hands.
+    function checkForWin(array) {
+        hand.cards = [new Card('C', 0, '2', 2),
+                    new Card('C', 0, '3', 3),
+                    new Card('C', 0, '4', 4),
+                    new Card('C', 0, '5', 5),
+                    new Card('C', 0, '6', 6)];
+        //royalFlush(hand.cards);
+        straightFlush(hand.cards);
+        // fourOfAKind(hand.cards);
+        // fullHouse(hand.cards);
+        //flush(hand.cards);
+        //straight(hand.cards);
+        //threeOfAKind(hand.cards);
+        //twoPair(hand.cards);
         
     }
     
-    // check for winning hands.
-    function checkForWin(array) {
-       sort(array);
-       
+    // Used to check hand for two pairs.
+    function twoPair(array) {
+        sortByValue(array);
+        let i, count = 0;
+        for (i = 0; i < (array.length - 1); i++) {
+            if (array[i].rankValue == array[i + 1].rankValue) {
+                ++i;
+                ++count;
+            }
+        }
+        
+        if(count == 2) {
+            alert("Two Pair - You WIN!");
+        }
+    }
+    
+    // Used to check hand for three of a Kind.
+    function threeOfAKind(array) {
+        sortByValue(array);
+        let i, count = 0;
+        for (i = 1; i < (array.length - 1); i++) {
+            if ((array[i - 1].rankValue == array[i].rankValue)
+                && (array[i].rankValue == array[i + 1].rankValue)
+                && (count == 0)) {
+                alert("Three of a Kind - You WIN!");
+                ++count;
+            }
+        }
+    }
+    
+    // Used to check hand for straight.
+    function straight(array) {
+        sortByValue(array);
+        let i, count = 0;
+        for (i = 0; i < (array.length - 1); i++) {
+            if((array[i + 1].rankValue - array[i].rankValue) == 1) {
+                ++count;
+            }
+        }
+        
+        if(count == (__handSize - 1)) {
+            alert("Straight - You WIN!");
+        }
+    }
+    
+    // Used to check hand for flush.
+    function flush(array) {
+        sortBySuit(array);
+        
+        if (array[0].suitValue == array[__handSize - 1].suitValue) {
+            alert("Flush - You WIN!");
+        }
+        
     }
 
+    // Used to check hand for fullHouse.
+    function fullHouse(array) {
+        sortByValue(array);
+        let i;
+        let foundFullHouse = false;
+        if (hand.cards[0].rankValue == hand.cards[1].rankValue) {
+            if (hand.cards[1].rankValue == hand.cards[2].rankValue) {
+                // three of a kind was found
+                if (hand.cards[3].rankValue == hand.cards.rankValue[4]) {
+                    // pair was found after three of a kind was found...FULL HOUSE!
+                    foundFullHouse = true;
+                }
+            }
+            else {
+                // pair was found
+                if (hand.cards[2].rankValue == hand.cards[3].rankValue) {
+                    if (hand.cards[3].rankValue == hand.cards[4].rankValue) {
+                        // three of a kind found after pair was found...FULL HOUSE!
+                        foundFullHouse = true;
+                    }
+                }
+            }
+        }
+        if (foundFullHouse) {
+            alert("Full House - You WIN!");
+        }
+    }
+    
+    function fourOfAKind(array) {
+        sortByValue(array);
+        let i, count = 0;
+        for (i = 1; i < (array.length - 2); i++) {
+            if ((array[i - 1].rankValue == array[i].rankValue)
+                && (array[i].rankValue == array[i + 1].rankValue)
+                && (array[i+1].rankValue == array[i+2].rankValue)
+                && (count == 0)) {
+                alert("Four of a Kind - You WIN!");
+                ++count;
+            }
+        }
+    }
+    
+    function straightFlush(array) {
+        sortByValue(array);
+        sortBySuit(array);
+        
+        // sortByValue(array);
+        // let i, count = 0;
+        // for (i = 0; i < (array.length - 1); i++) {
+        //     if((array[i + 1].rankValue - array[i].rankValue) == 1) {
+        //         ++count;
+        //     }
+        // }
+        
+        if (((array[__handSize - 1].rankValue - array[0].rankValue) == 4) 
+            && (array[0].suitValue == array[__handSize - 1].suitValue)) {
+            alert("Straight Flush - You WIN!");
+        }
+    }
+    
+    function royalFlush(array) {
+        sortByValue(array);
+        sortBySuit(array);
+        
+        if ((array[0].suitName == 'S') && (array[0].rankValue == 10) 
+            && (array[__handSize - 1].suitName == 'S') 
+            && (array[__handSize - 1].rankValue == 14)) {
+            alert("Royal Flush - You WIN!");
+        }
+    }
+    
+    // Creates a card. 
+    function Card(sName, sValue, rName, rValue) {
+        let card = {
+            suitName: sName,
+            suitValue: sValue,
+            rankName: rName,
+            rankValue: rValue,
+            held: false
+        };
+
+        return card;
+    }
+
+    // Creates a hand.
+    function allocateHand(size) {
+        let hand = {
+            cards: new Array(size)
+        };
+
+        return hand;
+    }
+
+    // Creates the deck.
+    function allocateDeck() {
+        let deck = {
+            cards: []
+        };
+
+        return deck;
+    }
+
+    // Fisher-Yates shuffles. Used to shuffle a deck.
+    function shuffle(array) {
+        let i, temp, random;
+        for (i = 0; i < array.length; i++) {
+            temp = array[i];
+            random = Math.floor(Math.random() * i);
+            array[i] = array[random];
+            array[random] = temp;
+        }
+    }
+
+    // Simple insertion sort. Used to sort the hand to simplify checking winning hands.
+    function sortByValue(array) {
+        let length = array.length;
+        for (let i = 1; i < length; i++) {
+            let card = array[i];
+            let j = i - 1;
+            while (j >= 0 && array[j].rankValue > card.rankValue) {
+                array[j + 1] = array[j];
+                j = j - 1;
+            }
+            array[j + 1] = card;
+        }
+    }
+
+    // Simple insertion sort. Used to sort the hand by suit.
+    function sortBySuit(array) {
+        let length = array.length;
+        for (let i = 1; i < length; i++) {
+            let card = array[i];
+            let j = i - 1;
+            while (j >= 0 && array[j].suitValue > card.suitValue) {
+                array[j + 1] = array[j];
+                j = j - 1;
+            }
+            array[j + 1] = card;
+        }
+    }
 
 }); //ready
-
-// Creates a card. 
-function Card(suit, value, key) {
-    let card = {
-        value: value,
-        suit: suit,
-        key: key,
-        held: true
-    };
-
-    return card;
-}
-
-// Creates a hand
-function allocateHand(size) {
-    let hand = {
-        cards: new Array(size)
-    };
-
-    return hand;
-}
-
-// Creates the deck
-function allocateDeck() {
-    let deck = {
-        cards: []
-    };
-
-    return deck;
-}
-
-// Fisher-Yates shuffles. Used to shuffle a deck.
-function shuffle(array) {
-    let i, temp, random;
-    for (i = 0; i < array.length; i++) {
-        temp = array[i];
-        random = Math.floor(Math.random() * i);
-        array[i] = array[random];
-        array[random] = temp;
-    }
-}
-
-
-//TODO: Fix this.
-// Simple insertion sort. Used to sort the hand to simplify checking winning hands.
-function sort(array) {
-    let i; 
-    for (i = 1; array.length; i++) {
-       let key = array[i];
-       let j = i - 1;
-       while (j >= 0 && array[j].key < array[j].key) {
-           array[j + 1] = array[j];
-           --j;
-       }
-       array[j + 1] = key;
-    }
-}
-
 
 

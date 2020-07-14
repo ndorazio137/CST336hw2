@@ -20,6 +20,7 @@
                 
             </div>
         </header>
+        
         <!-- Play Area border -->
         <div id="game-screen">
             <!-- Paytable Grid -->
@@ -45,6 +46,7 @@
                     <div class="paytable-item paytable-hand">2 PAIR</div>
                     <div class="paytable-item paytable-hand jacks-or-better">JACKS OR BETTER</div>
                 </div>
+                
                 <!-- 1 Coin Payouts -->
                 <div class="paytable-column paytable-payout">
                     <div class="paytable-item">250</div>
@@ -57,6 +59,7 @@
                     <div class="paytable-item">2</div>
                     <div class="paytable-item jacks-or-better">1</div>
                 </div>
+                
                 <!-- 2 Coin Payouts -->
                 <div class="paytable-column paytable-payout">
                     <div class="paytable-item">500</div>
@@ -69,6 +72,7 @@
                     <div class="paytable-item">4</div>
                     <div class="paytable-item jacks-or-better">2</div>
                 </div>
+                
                 <!-- 3 Coin Payouts -->
                 <div class="paytable-column paytable-payout">
                     <div class="paytable-item">750</div>
@@ -81,6 +85,7 @@
                     <div class="paytable-item">6</div>
                     <div class="paytable-item jacks-or-better">3</div>
                 </div>
+                
                 <!-- 4 Coin Payouts -->
                 <div class="paytable-column paytable-payout">
                     <div class="paytable-item">1000</div>
@@ -93,6 +98,7 @@
                     <div class="paytable-item">8</div>
                     <div class="paytable-item jacks-or-better">4</div>
                 </div>
+                
                 <!-- 5 Coin Payouts -->
                 <div class="paytable-column paytable-payout">
                     <div class="paytable-item">4000</div>
@@ -107,29 +113,31 @@
                 </div>
             </div> <!-- Ends Paytable Grid -->        
                     
-            <!--  -->
+            <!-- play area text -->
             <br />
             <div id="purse-info">PURSE: 100 COINS</div>
             <div id="bet-info">BET: 0 COINS</div>
+            
+            <!-- Cards -->
             <div class="card-container">
                 <div class="cards">
-                    <div class="card-held">HELD</div>
+                    <div id="card-held-0" class="card-held">HELD</div>
                     <img src="img/BK.gif" class="card" id="card0">
                 </div>
                 <div class="cards">
-                    <div class="card-held">HELD</div>
+                    <div id="card-held-1" class="card-held">HELD</div>
                     <img src="img/BK.gif" class="card" id="card1">
                 </div>
                 <div class="cards">
-                    <div class="card-held">HELD</div>
+                    <div id="card-held-2" class="card-held">HELD</div>
                     <img src="img/BK.gif" class="card" id="card2">
                 </div>
                 <div class="cards">
-                    <div class="card-held">HELD</div>
+                    <div id="card-held-3" class="card-held">HELD</div>
                     <img src="img/BK.gif" class="card" id="card3">
                 </div>
                 <div class="cards">
-                    <div class="card-held">HELD</div>
+                    <div id="card-held-4" class="card-held">HELD</div>
                     <img src="img/BK.gif" class="card" id="card4">
                 </div>
             </div>
@@ -140,7 +148,7 @@
             <div id="play-buttons">
                 <div class="play-grid-item">
                     <button type="button" id="increase-bet" class="play-grid-item1 btn btn-primary btn-lg"> + </button>
-                    <span id="bet-text" class="play-grid-item1">SET BET</span>
+                    <span type="text" id="bet-text" class="play-grid-item1">SET BET</span>
                     <button type="button" id="decrease-bet" class="play-grid-item1 btn btn-primary btn-lg"> - </button>
                 </div>
                 <button type="button" id="bet-one" class="play-grid-item btn btn-primary btn-lg"> BET ONE </button>
@@ -148,7 +156,7 @@
                 <button type="button" id="draw" class="play-grid-item btn btn-primary btn-lg"> DRAW </button>
             </div>
             
-        </div>
+        </div> <!-- Ends game screen -->
     </body>
 </html>
     

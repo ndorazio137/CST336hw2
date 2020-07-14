@@ -86,7 +86,7 @@ header {
 
 .card-held {
    color: white;
-   display: inline-block;
+   display: none;
    text-align: center;
    padding: 2vw;
 }
@@ -111,6 +111,10 @@ header {
    justify-content: center;
 }
 
+button {
+   width: 100px;
+}
+
 .play-grid-item {
    justify-content: center;
    margin: 10%;
@@ -126,3 +130,4 @@ header {
    text-align: center;
    color: white;
 }
+
