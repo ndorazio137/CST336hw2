@@ -80,9 +80,16 @@ $(document).ready(function() {
             $("#increase-bet").prop("disabled", true);
             $("#decrease-bet").prop("disabled", true);
             dealCards();
-            checkForWin(hand.cards);
+            let win = checkForWin(hand.cards);
             updateHeldCards();
             displayCards();
+            
+            if (win) {
+                won();
+            }
+            else {
+                lost();
+            }
         }
     }
 
@@ -221,20 +228,46 @@ $(document).ready(function() {
 
     // Check for winning hands.
     function checkForWin(array) {
-        hand.cards = [new Card('C', 0, '2', 2),
-                    new Card('C', 0, '3', 3),
-                    new Card('C', 0, '4', 4),
-                    new Card('C', 0, '5', 5),
-                    new Card('C', 0, '6', 6)];
-        //royalFlush(hand.cards);
-        straightFlush(hand.cards);
-        // fourOfAKind(hand.cards);
-        // fullHouse(hand.cards);
-        //flush(hand.cards);
-        //straight(hand.cards);
-        //threeOfAKind(hand.cards);
-        //twoPair(hand.cards);
+        if (royalFlush(array)) {
+            return true;
+        }
         
+        if (straightFlush(array)) {
+            return true;
+        }
+        
+        if (fourOfAKind(array)) {
+            return true;
+        }
+        
+        if (fullHouse(array)) {
+            return true;
+        }
+        
+        if (flush(array)) {
+            return true;
+        }
+        if (straight(array)) {
+            return true;
+        }
+        
+        if (threeOfAKind(array)) {
+            return true;
+        }
+        
+        if (twoPair(array)) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    function won() {
+        alert("You WIN!");
+    }
+    
+    function lost() {
+        alert("You lose...");
     }
     
     // Used to check hand for two pairs.
@@ -249,22 +282,24 @@ $(document).ready(function() {
         }
         
         if(count == 2) {
-            alert("Two Pair - You WIN!");
+            return true;
         }
+        
+        return false;
     }
     
     // Used to check hand for three of a Kind.
     function threeOfAKind(array) {
         sortByValue(array);
-        let i, count = 0;
+        let i;
         for (i = 1; i < (array.length - 1); i++) {
             if ((array[i - 1].rankValue == array[i].rankValue)
-                && (array[i].rankValue == array[i + 1].rankValue)
-                && (count == 0)) {
-                alert("Three of a Kind - You WIN!");
-                ++count;
+                && (array[i].rankValue == array[i + 1].rankValue)) {
+                return true;
             }
         }
+        
+        return false;
     }
     
     // Used to check hand for straight.
@@ -278,8 +313,10 @@ $(document).ready(function() {
         }
         
         if(count == (__handSize - 1)) {
-            alert("Straight - You WIN!");
+            return true;
         }
+        
+        return false;
     }
     
     // Used to check hand for flush.
@@ -287,9 +324,10 @@ $(document).ready(function() {
         sortBySuit(array);
         
         if (array[0].suitValue == array[__handSize - 1].suitValue) {
-            alert("Flush - You WIN!");
+            return true;
         }
         
+        return false;
     }
 
     // Used to check hand for fullHouse.
@@ -316,40 +354,36 @@ $(document).ready(function() {
             }
         }
         if (foundFullHouse) {
-            alert("Full House - You WIN!");
+            return true;
         }
+        
+        return false;
     }
     
     function fourOfAKind(array) {
         sortByValue(array);
-        let i, count = 0;
+        let i;
         for (i = 1; i < (array.length - 2); i++) {
             if ((array[i - 1].rankValue == array[i].rankValue)
                 && (array[i].rankValue == array[i + 1].rankValue)
-                && (array[i+1].rankValue == array[i+2].rankValue)
-                && (count == 0)) {
-                alert("Four of a Kind - You WIN!");
-                ++count;
+                && (array[i+1].rankValue == array[i+2].rankValue)) {
+                return true;
             }
         }
+        
+        return false;
     }
     
     function straightFlush(array) {
         sortByValue(array);
         sortBySuit(array);
         
-        // sortByValue(array);
-        // let i, count = 0;
-        // for (i = 0; i < (array.length - 1); i++) {
-        //     if((array[i + 1].rankValue - array[i].rankValue) == 1) {
-        //         ++count;
-        //     }
-        // }
-        
         if (((array[__handSize - 1].rankValue - array[0].rankValue) == 4) 
             && (array[0].suitValue == array[__handSize - 1].suitValue)) {
-            alert("Straight Flush - You WIN!");
+            return true;
         }
+        
+        return false;
     }
     
     function royalFlush(array) {
@@ -359,8 +393,10 @@ $(document).ready(function() {
         if ((array[0].suitName == 'S') && (array[0].rankValue == 10) 
             && (array[__handSize - 1].suitName == 'S') 
             && (array[__handSize - 1].rankValue == 14)) {
-            alert("Royal Flush - You WIN!");
+            return true;
         }
+        
+        return false;
     }
     
     // Creates a card. 
